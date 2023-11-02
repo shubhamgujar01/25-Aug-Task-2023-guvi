@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <Script>
+
+        //creating a req object
+        var req = new XMLHttpRequest();
+        console.log(req)
+
+        //open a connection
+        req.open('GET',"https://restcountries.com/v3.1/all")
+
+        //sending request
+        req.send();
+
+        //event and function
+
+        //using onload event(event triggers on page load)
+        req.onload = function(){
+            console.log("page Loaded")
+            // console.log(req.response.toString())
+            var data = JSON.parse(req.response)
+        //    console.log(data)
+
+           // for (let x of data){
+            //     console.log(x.name.common) //country name
+            //     console.log(x.flag) // flags
+            //     console.log(x.population) // contry's population
+            //     console.log(x.region) // region
+            //     console.log(x.subregion) // subregion
+
+
+
+            // }
+
+            // Get all Country names of Asia Region
+            var AsiaData = data.filter((elem) =>{
+                return elem.region==="Asia"
+            })
+
+            for(let x of AsiaData){
+                console.log(x.name.common)
+            }
+
+            //Population under 2 lakhs
+            var PopulationCehck = data.filter((elem) =>{
+                return elem.population<200000
+            })
+
+            for(let x of PopulationCehck){
+                console.log(x.name.common)
+            }
+
+            //foreach function to get name,capital and flag
+
+            function getDetails(item,index){
+               details = `${item.name.common}, ${item.flag}, ${item.capital}`
+               console.log(details)
+                
+            }
+
+            data.forEach(getDetails);
+
+            //Total population using reduce
+           var totalpop = data.reduce((acc,cur) => {
+                return acc+parseInt(cur.population)
+            },0)
+
+            console.log(totalpop)
+        
+            //Get Country names where currency is USD
+        for(let x of data){
+            if(x.currency==="USD"){
+                console.log(x.name.common)
+            }
+        }
+     }
+
+
+
+
+    </Script>
+</body>
+</html>
